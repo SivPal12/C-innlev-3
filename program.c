@@ -3,17 +3,21 @@
 #include <ncurses.h>
 #include <stdbool.h>
 
-const int with = 10, height = 20, canvasX = 2, canvasY = 2;
+const int height = 15, width = 10, canvasX = 2, canvasY = 2;
 
 const char EXIT_KEY = 'q';
 const char EMPTY = ' ';
-const char BLOCK = 219;
+const char BLOCK = '#';
 
 const bool bricks[][3][3] = {
   {
-    {false, true, true},
-    {false, true, true},
-    {false, true, true}
+    {false, true,  false},
+    {false, true,  false},
+    {false, true,  false}
+  },{
+    {false, false, false},
+    {true,  true,  true},
+    {false, false, false}
   }
 };
 
@@ -37,18 +41,19 @@ int main (int argc, char *argv[]) {
   int currentKey = getch();
 
   // init window
-  WINDOW * border = newwin(with+2,height+2,canvasX,canvasY);
-  WINDOW * win = newwin(with,height,canvasX+1,canvasY+1);
+  WINDOW * border = newwin(height+2,width+2,canvasX,canvasY);
+  WINDOW * win = newwin(height,width,canvasX+1,canvasY+1);
 
   // Draw frame
   box(border, 0, 0);
   wrefresh(border);
 
-  // ReadUserInput
+  // Game loop
   while ((currentKey = getch()) != EXIT_KEY) {
-    if (currentKey != ERR) {
-      wprintw(win, "%c", currentKey);
-    }
+    // ReadUserInput
+    // Modify brick
+
+
     // UpdateGameState
     // RenderGame
     wrefresh(win);
