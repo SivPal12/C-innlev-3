@@ -3,6 +3,12 @@
 #include <ncurses.h>
 #include <stdbool.h>
 
+typedef struct Bricks {
+  int posX, posY;
+  int rotation; // (0-3)
+  bool data[3][3];
+} Brick;
+
 const int height = 15, width = 10, canvasX = 2, canvasY = 2;
 
 const char EXIT_KEY = 'q';
@@ -11,11 +17,11 @@ const char BLOCK = '#';
 
 WINDOW *frame;
 WINDOW *win;
-
+Brick currentBrick;
 
 const bool bricks[][3][3] = {
   {
-    {false, true,  false},
+    {true,  true,  false},
     {false, true,  false},
     {false, true,  false}
   },{
@@ -26,6 +32,7 @@ const bool bricks[][3][3] = {
 };
 
 void renderGame();
+Brick newBrick();
 
 int main (int argc, char *argv[]) {
   // Setup screen
@@ -47,8 +54,15 @@ int main (int argc, char *argv[]) {
   int currentKey = getch();
 
   // init window
-  frame = newwin(height+2,width+2,canvasX,canvasY);
-  win = newwin(height,width,canvasX+1,canvasY+1);
+  frame = newwin(height+2,width+2,canvasY,canvasX);
+  win = newwin(height,width,canvasY+1,canvasX+1);
+
+  // Init brick
+  currentBrick = newBrick();
+
+  // Render frame
+  box(frame, 0, 0);
+  wrefresh(frame);
 
   // Game loop
   while ((currentKey = getch()) != EXIT_KEY) {
@@ -68,9 +82,39 @@ int main (int argc, char *argv[]) {
 
 
 void renderGame() {
+  // Render current block
+  for (int x = 0; x < 3; x++) {
+    for (int y = 0; y < 3; y++) {
+      mvwprintw(
+          win,
+          currentBrick.posX + x,
+          currentBrick.posY + y,
+          "%c",
+          currentBrick.data[x][y] ? BLOCK : EMPTY
+      );
+    }
+  }
   wrefresh(win);
 
-  box(frame, 0, 0);
-  wrefresh(frame);
-  refresh();
+//  refresh();
+}
+
+Brick newBrick() {
+  Brick brick;
+
+  brick.posX = 0; // TODO Set to '-3'
+  brick.posY = 0;
+  brick.rotation = 0;
+
+  // TODO Randomize brick
+  int randBrick = 0;
+
+  // Fill data
+  for (int x = 0; x < 3; x++) {
+    for (int y = 0; y < 3; y++) {
+      brick.data[x][y] = bricks[randBrick][x][y];
+    }
+  }
+
+  return brick;
 }
