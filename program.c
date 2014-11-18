@@ -19,6 +19,7 @@ const char BLOCK = '#';
 
 WINDOW *frame;
 WINDOW *win;
+WINDOW *winStatics;
 Brick currentBrick;
 bool staticBricks[width][height];
 int score = 0;
@@ -67,6 +68,7 @@ int main (int argc, char *argv[]) {
   // init window
   frame = newwin(height+2,width+2,canvasY,canvasX);
   win = newwin(height,width,canvasY+1,canvasX+1);
+  winStatics = newwin(height,width,canvasY+1,canvasX+1);
 
   // Init brick
   currentBrick = newBrick();
@@ -108,6 +110,16 @@ void renderGame() {
     }
   }
   wrefresh(win);
+
+  //Render statics
+  for (int x = 0; x < width; x++) {
+    for (int y = 0; y < height; y++) {
+      if (staticBricks[x][y]) {
+        mvwprintw(winStatics, y, x, "X");
+      }
+    }
+  }
+  wrefresh(winStatics);
 
 //  refresh();
 }
