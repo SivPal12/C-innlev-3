@@ -5,11 +5,13 @@
 
 typedef struct Bricks {
   int posX, posY;
-  int rotation; // (0-3)
   bool data[3][3];
 } Brick;
 
-const int height = 15, width = 10, canvasX = 2, canvasY = 2;
+const int canvasX = 2, canvasY = 2;
+
+#define height 15
+#define width 10
 
 const char EXIT_KEY = 'q';
 const char EMPTY = ' ';
@@ -18,6 +20,8 @@ const char BLOCK = '#';
 WINDOW *frame;
 WINDOW *win;
 Brick currentBrick;
+bool staticBricks[width][height];
+int score = 0;
 
 const bool bricks[][3][3] = {
   {
@@ -33,6 +37,13 @@ const bool bricks[][3][3] = {
 
 void renderGame();
 Brick newBrick();
+void updateGameState();
+void updateGameState();
+void moveCurrentBrickDown();
+void checkForCompleteRows();
+bool currentBrickTouchesStatics();
+void addCurrentBrickToStatics();
+
 
 int main (int argc, char *argv[]) {
   // Setup screen
@@ -71,6 +82,7 @@ int main (int argc, char *argv[]) {
 
 
     // UpdateGameState
+    updateGameState();
     // RenderGame
     renderGame();
   }
@@ -83,12 +95,13 @@ int main (int argc, char *argv[]) {
 
 void renderGame() {
   // Render current block
+  werase(win);
   for (int x = 0; x < 3; x++) {
     for (int y = 0; y < 3; y++) {
       mvwprintw(
           win,
-          currentBrick.posX + x,
           currentBrick.posY + y,
+          currentBrick.posX + x,
           "%c",
           currentBrick.data[x][y] ? BLOCK : EMPTY
       );
@@ -104,7 +117,6 @@ Brick newBrick() {
 
   brick.posX = 0; // TODO Set to '-3'
   brick.posY = 0;
-  brick.rotation = 0;
 
   // TODO Randomize brick
   int randBrick = 0;
@@ -117,4 +129,111 @@ Brick newBrick() {
   }
 
   return brick;
+}
+
+
+
+void updateGameState() {
+  moveCurrentBrickDown();
+  checkForCompleteRows();
+}
+
+void moveCurrentBrickDown() {
+  if (currentBrickTouchesStatics()) {
+    addCurrentBrickToStatics();
+  } else {
+    currentBrick.posY++;
+  }
+}
+
+void checkForCompleteRows() {
+  for (int row = height-1; row >= 0; row--) {
+    for (int col = 0; col < width; col++) {
+      // If line got empty space, got to next
+      if (!staticBricks[col][row]) {
+        break;
+      }
+      // If all are filled, move above lines down,
+      // increment score and check next line
+      if (col >= width-1) {
+        //Move lines down
+        for (int line = row - 1; line > 0; line--) {
+          for (int field = 0; field < width; field++) {
+            staticBricks[col][row] = staticBricks[col][line];
+          }
+        }
+        // Blank first line
+        for (int i = 0; i < width; i++) {
+          staticBricks[i][0] = false;
+        }
+
+        // Increment score
+        score++;
+
+        // Check next line
+        row--;
+      }
+    }
+  }
+}
+
+// Or bottom
+bool currentBrickTouchesStatics(){
+  int brickRowNum = -1;
+  bool brickRow[3];
+
+  for (int row = 2; row >= 0; row--) {
+    for (int col = 0; col < 3; col++) {
+      if (currentBrick.data[col][row]) {
+        brickRowNum = row;
+        for (int i = 0; i < 3; i++) {
+          brickRow[i] = currentBrick.data[brickRowNum][i];
+        }
+        break;
+      }
+    }
+    if (brickRowNum != -1) {
+      break;
+    }
+  }
+
+  // If last line
+  if (currentBrick.posY + brickRowNum + 1 >= height) {
+    return true;
+  }
+
+  // For each column in current bricks lowest non-empty line
+  for (int col = 0; col < 3; col++) {
+    // If brick has block on this column
+    if (brickRow[col]) {
+      // Check if below is static block
+      if (staticBricks
+          [currentBrick.posX + col]
+          [currentBrick.posY + brickRowNum + 1]) {
+        return true;
+      }
+    }
+  }
+
+/*
+  for (int row = 2; row >= 0; row--) {
+    for (int col = 0; col < 3; col++) {
+      if (staticBricks[currentBrick.posX + col + 2
+    }
+  }
+*/
+  return false;
+}
+
+// Adds current brick to statics and inits new brick
+void addCurrentBrickToStatics() {
+  for (int row = 0; row < 3; row++) {
+    for (int col = 0; col < 3; col++) {
+      staticBricks
+          [currentBrick.posX + col]
+          [currentBrick.posY + row]
+          = currentBrick.data[col][row];
+    }
+  }
+  currentBrick = newBrick();
 }
