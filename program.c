@@ -33,15 +33,14 @@ int main (int argc, char *argv[]) {
   box(border, 0, 0);
   wrefresh(border);
 
-
+  // ReadUserInput
   while ((currentKey = getch()) != EXIT_KEY) {
     if (currentKey != ERR) {
       wprintw(win, "%c", currentKey);
     }
-    wrefresh(win);
-    // ReadUserInput
     // UpdateGameState
     // RenderGame
+    wrefresh(win);
     refresh();
   }
 
