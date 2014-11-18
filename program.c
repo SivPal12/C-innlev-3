@@ -241,10 +241,15 @@ bool currentBrickTouchesStatics(){
 void addCurrentBrickToStatics() {
   for (int row = 0; row < 3; row++) {
     for (int col = 0; col < 3; col++) {
-      staticBricks
+      // If staticBricks' block is empty, add currentBricks' block
+      if (!staticBricks
           [currentBrick.posX + col]
-          [currentBrick.posY + row]
-          = currentBrick.data[col][row];
+          [currentBrick.posY + row]) {
+        staticBricks
+            [currentBrick.posX + col]
+            [currentBrick.posY + row]
+            = currentBrick.data[col][row];
+      }
     }
   }
   currentBrick = newBrick();
