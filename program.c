@@ -26,14 +26,10 @@ int main (int argc, char *argv[]) {
   int currentKey = getch();
 
   // init window
-const int with = 10, height = 20, canvasX = 2, canvasY = 2;
   WINDOW * border = newwin(with+2,height+2,canvasX,canvasY);
   WINDOW * win = newwin(with,height,canvasX+1,canvasY+1);
 
-//  box(border, 0,0);
-//  wrefresh(border);
-//  refresh();
-
+  // Draw frame
   box(border, 0, 0);
   wrefresh(border);
 
