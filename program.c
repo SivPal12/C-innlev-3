@@ -1,10 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ncurses.h>
+#include <stdbool.h>
 
 const int with = 10, height = 20, canvasX = 2, canvasY = 2;
 
 const char EXIT_KEY = 'q';
+const char EMPTY = ' ';
+const char BLOCK = 219;
+
+const bool bricks[][3][3] = {
+  {
+    {false, true, true},
+    {false, true, true},
+    {false, true, true}
+  }
+};
 
 int main (int argc, char *argv[]) {
   // Setup screen
