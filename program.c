@@ -9,6 +9,10 @@ const char EXIT_KEY = 'q';
 const char EMPTY = ' ';
 const char BLOCK = '#';
 
+WINDOW *frame;
+WINDOW *win;
+
+
 const bool bricks[][3][3] = {
   {
     {false, true,  false},
@@ -20,6 +24,8 @@ const bool bricks[][3][3] = {
     {false, false, false}
   }
 };
+
+void renderGame();
 
 int main (int argc, char *argv[]) {
   // Setup screen
@@ -41,12 +47,8 @@ int main (int argc, char *argv[]) {
   int currentKey = getch();
 
   // init window
-  WINDOW * border = newwin(height+2,width+2,canvasX,canvasY);
-  WINDOW * win = newwin(height,width,canvasX+1,canvasY+1);
-
-  // Draw frame
-  box(border, 0, 0);
-  wrefresh(border);
+  frame = newwin(height+2,width+2,canvasX,canvasY);
+  win = newwin(height,width,canvasX+1,canvasY+1);
 
   // Game loop
   while ((currentKey = getch()) != EXIT_KEY) {
@@ -56,11 +58,19 @@ int main (int argc, char *argv[]) {
 
     // UpdateGameState
     // RenderGame
-    wrefresh(win);
-    refresh();
+    renderGame();
   }
 
   endwin();
 
   return 0;
+}
+
+
+void renderGame() {
+  wrefresh(win);
+
+  box(frame, 0, 0);
+  wrefresh(frame);
+  refresh();
 }
