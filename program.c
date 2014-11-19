@@ -47,6 +47,7 @@ bool currentBrickTouchesStatics();
 void addCurrentBrickToStatics();
 void moveBrick(int key);
 void rotateCurrBrick();
+void moveBrickLeft();
 
 
 int main (int argc, char *argv[]) {
@@ -215,6 +216,7 @@ bool currentBrickTouchesStatics(){
         break;
       }
     }
+    // Hackish. I know
     if (brickRowNum != -1) {
       break;
     }
@@ -267,7 +269,7 @@ void moveBrick(int key) {
       currentBrick.posX++;
       break;
     case KEY_LEFT:
-      currentBrick.posX--;
+      moveBrickLeft();
       break;
     default:
     case ERR:
@@ -281,6 +283,26 @@ void rotateCurrBrick(){
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
       currentBrick.data[i][j] = tmpBrick[2-j][i];
+    }
+  }
+}
+
+void moveBrickLeft() {
+  for (int col = 0; col < 3; col++) {
+    for (int row = 0; row < 3; row++) {
+      // If current brick has block
+      if (currentBrick.data[col][row]) {
+        // Check if game border is NOT to the left
+        if (currentBrick.posX + col > 0) {
+          // Check if a static brick is to the left
+          if (!staticBricks
+              [currentBrick.posX + col - 1]
+              [currentBrick.posY + row]) {
+            currentBrick.posX--;
+          }
+        }
+        return;
+      }
     }
   }
 }
