@@ -59,6 +59,9 @@ int main (int argc, char *argv[]) {
   // No echo
   noecho();
 
+  // No cursor
+  curs_set(0);
+
   // Disable line buffer
   cbreak();
 
