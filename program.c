@@ -136,7 +136,8 @@ Brick newBrick() {
   // Fill data
   for (int x = 0; x < 3; x++) {
     for (int y = 0; y < 3; y++) {
-      brick.data[x][y] = bricks[randBrick][x][y];
+      // Rotate brick
+      brick.data[x][y] = bricks[randBrick][y][x];
     }
   }
 
