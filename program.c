@@ -195,12 +195,16 @@ bool currentBrickTouchesStatics(){
   int brickRowNum = -1;
   bool brickRow[3];
 
+  // For each line in current brick
   for (int row = 2; row >= 0; row--) {
+    // For each block
     for (int col = 0; col < 3; col++) {
+      // If current brick has a block on this line
       if (currentBrick.data[col][row]) {
+        // Save row number
         brickRowNum = row;
         for (int i = 0; i < 3; i++) {
-          brickRow[i] = currentBrick.data[brickRowNum][i];
+          brickRow[i] = currentBrick.data[i][brickRowNum];
         }
         break;
       }
