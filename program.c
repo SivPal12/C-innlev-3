@@ -86,11 +86,14 @@ int main (int argc, char *argv[]) {
   // Game loop
   while ((currentKey = getch()) != EXIT_KEY) {
     // ReadUserInput
-    // Modify brick
-    moveBrick(currentKey);
+    if (currentKey != ERR) {
+      // Modify brick
+      moveBrick(currentKey);
 
-    // UpdateGameState
-    updateGameState();
+    } else {
+      // UpdateGameState
+      updateGameState();
+    }
     // RenderGame
     renderGame();
   }
