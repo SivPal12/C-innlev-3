@@ -82,7 +82,6 @@ int main (int argc, char *argv[]) {
     // ReadUserInput
     // Modify brick
 
-
     // UpdateGameState
     updateGameState();
     // RenderGame
@@ -93,7 +92,6 @@ int main (int argc, char *argv[]) {
 
   return 0;
 }
-
 
 void renderGame() {
   // Render current block
@@ -143,8 +141,6 @@ Brick newBrick() {
 
   return brick;
 }
-
-
 
 void updateGameState() {
   moveCurrentBrickDown();
@@ -231,14 +227,6 @@ bool currentBrickTouchesStatics(){
       }
     }
   }
-
-/*
-  for (int row = 2; row >= 0; row--) {
-    for (int col = 0; col < 3; col++) {
-      if (staticBricks[currentBrick.posX + col + 2
-    }
-  }
-*/
   return false;
 }
 
