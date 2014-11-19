@@ -136,7 +136,7 @@ Brick newBrick() {
   brick.posY = 0;
 
   // TODO Randomize brick
-  int randBrick = 0;
+  int randBrick = 1;
 
   // Fill data
   for (int x = 0; x < 3; x++) {
@@ -173,21 +173,21 @@ void checkForCompleteRows() {
       // increment score and check next line
       if (col >= width-1) {
         //Move lines down
-        for (int line = row - 1; line > 0; line--) {
-          for (int field = 0; field < width; field++) {
-            staticBricks[col][row] = staticBricks[col][line];
+        for (int line = row; line > 0; line --) {
+          for (int block = 0; block < width; block++) {
+            staticBricks[block][line] = staticBricks[block][line-1];
           }
         }
         // Blank first line
         for (int i = 0; i < width; i++) {
-          staticBricks[i][0] = false;
+          staticBricks[0][i] = false;
         }
 
         // Increment score
         score++;
 
         // Check next line
-        row--;
+        row++;
       }
     }
   }
