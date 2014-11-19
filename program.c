@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ncurses.h>
 #include <stdbool.h>
+#include <string.h>
 
 typedef struct Bricks {
   int posX, posY;
@@ -10,7 +11,7 @@ typedef struct Bricks {
 
 const int canvasX = 2, canvasY = 2;
 
-#define height 15
+#define height 20
 #define width 10
 
 const char EXIT_KEY = 'q';
@@ -44,6 +45,8 @@ void moveCurrentBrickDown();
 void checkForCompleteRows();
 bool currentBrickTouchesStatics();
 void addCurrentBrickToStatics();
+void moveBrick(int key);
+void rotateCurrBrick();
 
 
 int main (int argc, char *argv[]) {
@@ -81,6 +84,7 @@ int main (int argc, char *argv[]) {
   while ((currentKey = getch()) != EXIT_KEY) {
     // ReadUserInput
     // Modify brick
+    moveBrick(currentKey);
 
     // UpdateGameState
     updateGameState();
@@ -246,4 +250,31 @@ void addCurrentBrickToStatics() {
     }
   }
   currentBrick = newBrick();
+}
+
+void moveBrick(int key) {
+  switch (key) {
+    case KEY_UP:
+      rotateCurrBrick();
+      break;
+    case KEY_RIGHT:
+      currentBrick.posX++;
+      break;
+    case KEY_LEFT:
+      currentBrick.posX--;
+      break;
+    default:
+    case ERR:
+      break;
+  }
+}
+
+void rotateCurrBrick(){
+  bool tmpBrick[3][3];
+  memcpy(tmpBrick, currentBrick.data, sizeof(currentBrick.data));
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      currentBrick.data[i][j] = tmpBrick[2-j][i];
+    }
+  }
 }
