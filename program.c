@@ -48,6 +48,7 @@ void addCurrentBrickToStatics();
 void moveBrick(int key);
 void rotateCurrBrick();
 void moveBrickLeft();
+void moveBrickRight();
 
 
 int main (int argc, char *argv[]) {
@@ -266,7 +267,7 @@ void moveBrick(int key) {
       rotateCurrBrick();
       break;
     case KEY_RIGHT:
-      currentBrick.posX++;
+      moveBrickRight();
       break;
     case KEY_LEFT:
       moveBrickLeft();
@@ -299,6 +300,26 @@ void moveBrickLeft() {
               [currentBrick.posX + col - 1]
               [currentBrick.posY + row]) {
             currentBrick.posX--;
+          }
+        }
+        return;
+      }
+    }
+  }
+}
+
+void moveBrickRight(){
+  for (int col = 2; col >= 0; col--) {
+    for (int row = 0; row < 3; row++) {
+      // If current brick has block
+      if (currentBrick.data[col][row]) {
+        // Check if game border is NOT to the right
+        if (currentBrick.posX + col + 1 < width) {
+          // Check if a static brick is to the right
+          if (!staticBricks
+              [currentBrick.posX + col + 1]
+              [currentBrick.posY + row]) {
+            currentBrick.posX++;
           }
         }
         return;
