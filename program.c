@@ -20,9 +20,18 @@ const char BLOCK = '#';
 
 WINDOW *frame;
 WINDOW *win;
+WINDOW *winScore;
 Brick currentBrick;
 bool staticBricks[width][height];
-int score = 0;
+
+typedef struct {
+  int score;
+  int posX;
+  int posY;
+  int boardWidth;
+  int boardHeight;
+} ScoreBoard;
+ScoreBoard scoreBoard;
 
 const bool bricks[][3][3] = {
   {
@@ -83,6 +92,21 @@ int main (int argc, char *argv[]) {
   box(frame, 0, 0);
   wrefresh(frame);
 
+  // Init score
+  scoreBoard.score = 0;
+  scoreBoard.posX = canvasX + width + 2;
+  scoreBoard.posY = canvasY;
+  scoreBoard.boardWidth = 30;
+  scoreBoard.boardHeight = 3;
+  winScore = newwin(
+      scoreBoard.boardHeight,
+      scoreBoard.boardWidth,
+      scoreBoard.posY,
+      scoreBoard.posX);
+  box(winScore, 0,0);
+  mvwprintw(winScore,1,1, "Score: %d", scoreBoard.score);
+  wrefresh(winScore);
+
   // Game loop
   while ((currentKey = getch()) != EXIT_KEY) {
     // ReadUserInput
@@ -127,6 +151,11 @@ void renderGame() {
     }
   }
   wrefresh(win);
+
+  // Render scores
+  mvwprintw(winScore,1,8, "%d", scoreBoard.score);
+  wrefresh(winScore);
+
 
 //  refresh();
 }
@@ -186,7 +215,7 @@ void checkForCompleteRows() {
         }
 
         // Increment score
-        score++;
+        scoreBoard.score++;
 
         // Check next line
         row++;
