@@ -74,6 +74,7 @@ void moveBrick(int key);
 void rotateCurrBrick();
 void moveBrickLeft();
 void moveBrickRight();
+void moveBrickToBottom();
 
 
 int main (int argc, char *argv[]) {
@@ -300,6 +301,9 @@ void moveBrick(int key) {
     case KEY_LEFT:
       moveBrickLeft();
       break;
+    case ' ':
+      moveBrickToBottom();
+      break;
     default:
     case ERR:
       break;
@@ -353,5 +357,11 @@ void moveBrickRight(){
         return;
       }
     }
+  }
+}
+
+void moveBrickToBottom(){
+  while (!currentBrickTouchesStatics()) {
+    moveCurrentBrickDown();
   }
 }
