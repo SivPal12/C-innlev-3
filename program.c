@@ -55,7 +55,7 @@ const bool bricks[][3][3] = {
     {false, true,  false},
     {true,  true,  false}
   },{
-    {false, false, false},
+    {false, true,  false},
     {true,  true,  true },
     {false, false, false}
   }
@@ -92,7 +92,7 @@ int main (int argc, char *argv[]) {
   cbreak();
 
   // input listening mode
-  halfdelay(1);
+  halfdelay(3);
 
   // Start program
   int currentKey = getch();
@@ -144,8 +144,8 @@ int main (int argc, char *argv[]) {
 }
 
 void renderGame() {
-  // Render current block
   werase(win);
+  // Render current block
   for (int x = 0; x < 3; x++) {
     for (int y = 0; y < 3; y++) {
       mvwprintw(
