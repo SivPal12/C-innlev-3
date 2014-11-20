@@ -35,12 +35,28 @@ ScoreBoard scoreBoard;
 
 const bool bricks[][3][3] = {
   {
-    {true,  true,  false},
+    {false, true,  false},
     {false, true,  false},
     {false, true,  false}
   },{
-    {false, false, false},
+    {false, true,  false},
+    {true,  true,  true },
+    {false, true,  false}
+  },{
+    {true,  true,  false},
+    {false, true,  false},
+    {false, true,  true }
+  },{
     {true,  true,  true},
+    {true,  true,  true},
+    {true,  true,  true}
+  },{
+    {false, true,  true},
+    {false, true,  false},
+    {true,  true,  false}
+  },{
+    {false, false, false},
+    {true,  true,  true },
     {false, false, false}
   }
 };
@@ -167,7 +183,7 @@ Brick newBrick() {
   brick.posY = 0;
 
   // TODO Randomize brick
-  int randBrick = 1;
+  int randBrick = rand() % sizeof(bricks)/3/3;
 
   // Fill data
   for (int x = 0; x < 3; x++) {
