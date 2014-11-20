@@ -304,6 +304,9 @@ void moveBrick(int key) {
     case ' ':
       moveBrickToBottom();
       break;
+    case KEY_DOWN:
+      moveCurrentBrickDown();
+      break;
     default:
     case ERR:
       break;
