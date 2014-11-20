@@ -311,7 +311,7 @@ void rotateCurrBrick(){
   memcpy(tmpBrick, currentBrick.data, sizeof(currentBrick.data));
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
-      currentBrick.data[i][j] = tmpBrick[2-j][i];
+      currentBrick.data[i][j] = tmpBrick[j][2-i];
     }
   }
 }
