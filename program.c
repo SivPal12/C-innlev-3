@@ -226,43 +226,22 @@ void checkForCompleteRows() {
 
 // Or bottom
 bool currentBrickTouchesStatics(){
-  int brickRowNum = -1;
-  bool brickRow[3];
-
-  // For each line in current brick
+  // For each row on current brick
   for (int row = 2; row >= 0; row--) {
-    // For each block
+    // For each column
     for (int col = 0; col < 3; col++) {
-      // If current brick has a block on this line
+      // If brick has block at this pos
       if (currentBrick.data[col][row]) {
-        // Save row number
-        brickRowNum = row;
-        for (int i = 0; i < 3; i++) {
-          brickRow[i] = currentBrick.data[i][brickRowNum];
+        // If below is bottom, return true
+        if (currentBrick.posY + row + 1 >= height) {
+          return true;
         }
-        break;
-      }
-    }
-    // Hackish. I know
-    if (brickRowNum != -1) {
-      break;
-    }
-  }
-
-  // If last line
-  if (currentBrick.posY + brickRowNum + 1 >= height) {
-    return true;
-  }
-
-  // For each column in current bricks lowest non-empty line
-  for (int col = 0; col < 3; col++) {
-    // If brick has block on this column
-    if (brickRow[col]) {
-      // Check if below is static block
-      if (staticBricks
-          [currentBrick.posX + col]
-          [currentBrick.posY + brickRowNum + 1]) {
-        return true;
+        // If below is a static brick
+        if (staticBricks
+            [currentBrick.posX + col]
+            [currentBrick.posY + row + 1]) {
+          return true;
+        }
       }
     }
   }
