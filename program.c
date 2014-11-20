@@ -3,6 +3,7 @@
 #include <ncurses.h>
 #include <stdbool.h>
 #include <string.h>
+#include <time.h>
 
 typedef struct Bricks {
   int posX, posY;
@@ -76,6 +77,9 @@ void moveBrickRight();
 
 
 int main (int argc, char *argv[]) {
+  // Init rand
+  srand(time(NULL));
+
   // Setup screen
   initscr();
 
@@ -179,7 +183,7 @@ void renderGame() {
 Brick newBrick() {
   Brick brick;
 
-  brick.posX = 0; // TODO Set to '-3'
+  brick.posX = 0;
   brick.posY = 0;
 
   // TODO Randomize brick
